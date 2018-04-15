@@ -5,8 +5,14 @@ from . import node_info
 
 class Tree:
     def __init__(self):
-        self.height=0
-        self.tree_queue=Queue()
+        self._height=0
+        self.nodes=[]
 
-    def add_node(self,node):
-        x=1
+    def add_node(self,node,parent_node):
+        if parent_node is not None:
+            parent_node.nodes.append(node)
+        else:
+            self.nodes.append(node)
+
+    def get_height(self):
+        return count( node in self.nodes )

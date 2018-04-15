@@ -22,5 +22,7 @@ def test_tree():
     cn1.node_key="body"
     t.add_node(cn1,n)    
 
+    t.plot_tree()
+
 if __name__=="__main__":
     test_tree()

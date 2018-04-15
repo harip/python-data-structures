@@ -3,13 +3,9 @@ from . import node_type
 
 class NodeInfo:
     def __init__(self):
-        self._id=uuid.uuid4()
-
-        self.parent_id=self._id
+        self.id=uuid.uuid4()
+        self.parent_id=self.id
         self.node_key=""
         self.node_val="" 
         self.type=node_type.NodeType.CHILD
         self.nodes=[]
-
-    def get_id(self):
-        return self._id

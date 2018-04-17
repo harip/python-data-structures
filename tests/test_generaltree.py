@@ -22,6 +22,11 @@ def test_tree():
     cn1.node_key="body"
     t.add_node(cn1,n)    
 
+    # Add a child node to body
+    cn2=NodeInfo()
+    cn2.node_key="<p>"
+    t.add_node(cn2,cn1)        
+
     t.plot_tree()
 
 if __name__=="__main__":

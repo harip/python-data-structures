@@ -21,11 +21,15 @@ class PlotTree:
 
     def label(self,xy, text): 
         plt.text(xy[0],xy[1], text, ha="center", family='sans-serif', size=9)
+
+    def get_arrow_coordinates(self,start_loc,end_loc):
+        dx=end_loc[0]-start_loc[0]
+        dy=end_loc[1]-start_loc[1]   
+        return (start_loc[0],start_loc[1],dx,dy)     
     
     def set_mgrid(self):
         num_of_paths=len(self.tree.paths)
         max_node_path= self.tree.get_height()+1
-
         grid_size_y=complex(0,max_node_path)
         grid_size_x=complex(0,num_of_paths)
         x=0
@@ -37,8 +41,7 @@ class PlotTree:
         colors = np.linspace(0, 1, len(self.patches ))
         collection = PatchCollection(self.patches , cmap=plt.cm.hsv, alpha=0.3)
         collection.set_array(np.array(colors))
-        self.ax.add_collection(collection)
-        
+        self.ax.add_collection(collection)        
         plt.axis('equal')
         plt.axis('off')
         plt.tight_layout()
@@ -70,16 +73,8 @@ class PlotTree:
 
                 # Draw arrow
                 if prev_path!=-1:
-                    start_x=self.grid[prev_path,0]
-                    start_y= self.grid[prev_path,1]
-
-                    end_x=self.grid[path_node_counter,0]
-                    end_y=self.grid[path_node_counter,1]
-
-                    dx=end_x-start_x
-                    dy=end_y-start_y
-
-                    arrow = mpatches.Arrow(self.grid[prev_path,0], self.grid[prev_path,1], dx, dy,width=0.05)
+                    arrow_coord=self.get_arrow_coordinates(self.grid[prev_path],self.grid[path_node_counter])
+                    arrow = mpatches.Arrow(arrow_coord[0], arrow_coord[1], arrow_coord[2], arrow_coord[3],width=0.05)
                     self.patches.append(arrow)
 
                 self.plotted[j]=path_node_counter

@@ -53,7 +53,7 @@ class PlotTree:
             prev_path=-1
             for j in v:
                 if j in self.plotted:
-                    prev_path=path_node_counter
+                    prev_path=self.plotted[j]
                     path_node_counter=path_node_counter+1
                     continue
 
@@ -64,13 +64,13 @@ class PlotTree:
 
                 # Draw arrow
                 if prev_path!=-1:
-                    arrow = mpatches.Arrow(self.grid[prev_path,0]- 0.05, self.grid[prev_path,1]- 0.05, self.grid[path_node_counter,0], self.grid[path_node_counter,1],width=0.1)
+                    arrow = mpatches.Arrow(self.grid[prev_path,0], self.grid[prev_path,1], self.grid[path_node_counter,0], self.grid[path_node_counter,1],width=0.1)
                     self.patches.append(arrow)
 
+                self.plotted[j]=path_node_counter
                 prev_path=path_node_counter
                 path_node_counter=path_node_counter+1                
-                self.plotted[j]=True
-
+                
             path_counter=path_counter+1
             path_node_counter=tree_height*path_counter
 

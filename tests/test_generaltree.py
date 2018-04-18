@@ -17,35 +17,35 @@ def test_tree():
     cn.node_key="head"
     t.add_node(cn,n)
 
-    # # Add a child node
-    # cn5=NodeInfo()
-    # cn5.node_key="js"
-    # t.add_node(cn5,cn)    
+    # Add a child node
+    cn5=NodeInfo()
+    cn5.node_key="js"
+    t.add_node(cn5,cn)    
 
     # # Add a child node
-    # cn6=NodeInfo()
-    # cn6.node_key="stylesheet"
-    # t.add_node(cn6,cn)       
+    cn6=NodeInfo()
+    cn6.node_key="stylesheet"
+    t.add_node(cn6,cn)       
 
-    # # Add a child node
-    # cn1=NodeInfo()
-    # cn1.node_key="body"
-    # t.add_node(cn1,n)    
-
-    # # Add a child node to body
-    # cn2=NodeInfo()
-    # cn2.node_key="<p>"
-    # t.add_node(cn2,cn1)        
+    # Add a child node
+    cn1=NodeInfo()
+    cn1.node_key="body"
+    t.add_node(cn1,n)    
 
     # # Add a child node to body
-    # cn3=NodeInfo()
-    # cn3.node_key="<p>"
-    # t.add_node(cn3,cn1)     
+    cn2=NodeInfo()
+    cn2.node_key="<p>"
+    t.add_node(cn2,cn1)        
 
-    # # Add a child node to body
-    # cn4=NodeInfo()
-    # cn4.node_key="<p>"
-    # t.add_node(cn4,cn1)     
+    # Add a child node to body
+    cn3=NodeInfo()
+    cn3.node_key="<p>"
+    t.add_node(cn3,cn1)     
+
+    # Add a child node to body
+    cn4=NodeInfo()
+    cn4.node_key="<p>"
+    t.add_node(cn4,cn1)     
  
 
     t.plot_tree()

@@ -20,7 +20,7 @@ class PlotTree:
         self.plotted=dict()
 
     def label(self,xy, text):
-        y = xy[1] - 0.15  # shift y-value for label so that it's below the artist
+        y = xy[1]  # shift y-value for label so that it's below the artist
         plt.text(xy[0], y, text, ha="center", family='sans-serif', size=14)
     
     def set_mgrid(self):
@@ -29,7 +29,9 @@ class PlotTree:
 
         grid_size_y=complex(0,max_node_path)
         grid_size_x=complex(0,num_of_paths)
-        self.grid =np.mgrid[0.2:0.8:grid_size_x, 0.2:0.8:grid_size_y].reshape(2, -1).T
+        x=0
+        y=num_of_paths*0.2
+        self.grid =np.mgrid[x:y:grid_size_x,x:y:grid_size_y].reshape(2, -1).T
 
     def set_plot(self):
         colors = np.linspace(0, 1, len(self.patches ))
@@ -60,7 +62,10 @@ class PlotTree:
                 # Draw ellipse
                 ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
                 self.patches.append(ellipse) 
-                self.label(self.grid[path_node_counter], path_node_counter)  
+
+                # Get text of node
+                node=self.tree.node_belongs_to_path[j].Node
+                self.label(self.grid[path_node_counter], node.node_key)  
 
                 # Draw arrow
                 if prev_path!=-1:

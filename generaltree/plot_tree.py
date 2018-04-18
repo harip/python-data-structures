@@ -19,9 +19,8 @@ class PlotTree:
         self.tree=None
         self.plotted=dict()
 
-    def label(self,xy, text):
-        y = xy[1]  # shift y-value for label so that it's below the artist
-        plt.text(xy[0], y, text, ha="center", family='sans-serif', size=14)
+    def label(self,xy, text): 
+        plt.text(xy[0],xy[1], text, ha="center", family='sans-serif', size=9)
     
     def set_mgrid(self):
         num_of_paths=len(self.tree.paths)
@@ -32,12 +31,14 @@ class PlotTree:
         x=0
         y=num_of_paths*0.2
         self.grid =np.mgrid[x:y:grid_size_x,x:y:grid_size_y].reshape(2, -1).T
+        self.grid=self.grid[::-1] 
 
     def set_plot(self):
         colors = np.linspace(0, 1, len(self.patches ))
         collection = PatchCollection(self.patches , cmap=plt.cm.hsv, alpha=0.3)
         collection.set_array(np.array(colors))
         self.ax.add_collection(collection)
+        
         plt.axis('equal')
         plt.axis('off')
         plt.tight_layout()

@@ -47,6 +47,10 @@ def test_tree():
     cn4.node_key="<p>"
     t.add_node(cn4,cn1)     
  
+     # Add a child node to body
+    cn7=NodeInfo()
+    cn7.node_key="<b>"
+    t.add_node(cn7,cn4)    
 
     t.plot_tree()
 

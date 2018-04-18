@@ -64,7 +64,16 @@ class PlotTree:
 
                 # Draw arrow
                 if prev_path!=-1:
-                    arrow = mpatches.Arrow(self.grid[prev_path,0], self.grid[prev_path,1], self.grid[path_node_counter,0], self.grid[path_node_counter,1],width=0.1)
+                    start_x=self.grid[prev_path,0]
+                    start_y= self.grid[prev_path,1]
+
+                    end_x=self.grid[path_node_counter,0]
+                    end_y=self.grid[path_node_counter,1]
+
+                    dx=end_x-start_x
+                    dy=end_y-start_y
+
+                    arrow = mpatches.Arrow(self.grid[prev_path,0], self.grid[prev_path,1], dx, dy,width=0.05)
                     self.patches.append(arrow)
 
                 self.plotted[j]=path_node_counter

@@ -27,7 +27,7 @@ def test_tree():
     cn6.node_key="stylesheet"
     t.add_node(cn6,cn)       
 
-    # Add a child node
+    # # Add a child node
     cn1=NodeInfo()
     cn1.node_key="body"
     t.add_node(cn1,n)    

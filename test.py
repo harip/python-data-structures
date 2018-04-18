@@ -12,23 +12,20 @@ def label(xy, text):
     y = xy[1] - 0.15  # shift y-value for label so that it's below the artist
     plt.text(xy[0], y, text, ha="center", family='sans-serif', size=14)
 
+def get_ells(n,patches):
+    for i in range(0,n):
+        ellipse = mpatches.Ellipse(grid[i], 0.2, 0.1)
+        patches.append(ellipse)
+        label(grid[i], i)        
+
 
 fig, ax = plt.subplots()
 # create 3x3 grid to plot the artists
 grid = np.mgrid[0.2:0.8:3j, 0.2:0.8:3j].reshape(2, -1).T
 
 patches = []
-
-# add an ellipse
-ellipse = mpatches.Ellipse(grid[4], 0.2, 0.1)
-patches.append(ellipse)
-label(grid[4], "Ellipse")
-
-# add an arrow
-arrow = mpatches.Arrow(grid[5, 0] - 0.05, grid[5, 1] - 0.05, 0.1, 0.1,
-                       width=0.1)
-patches.append(arrow)
-label(grid[5], "Arrow")
+get_ells(9,patches)
+ 
 
 colors = np.linspace(0, 1, len(patches))
 collection = PatchCollection(patches, cmap=plt.cm.hsv, alpha=0.3)

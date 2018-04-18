@@ -39,16 +39,17 @@ class Tree:
             path_node.NodePos=0
             self.node_belongs_to_path[node.id]=path_node
 
-
             self.root_node=node
         else:
             # Get parent path
             path=self.node_belongs_to_path[node.parent_id]
 
-            idx=len(self.paths[path.Path])-1
+            # Location of parent in the path
+            idx=path.NodePos #len(self.paths[path.Path])-1
+
             path_pos=idx+1
             path_name=path.Path
-            if self.paths[path.Path][idx]==node.parent_id:
+            if self.paths[path.Path][len(self.paths[path.Path])-1]==node.parent_id:
                 # If parent is the last item in the path
                 # Then the child can be attached to it                
                 self.paths[path.Path].append(node.id)
@@ -71,8 +72,11 @@ class Tree:
             path_new_node.NodePos=path_pos
             self.node_belongs_to_path[node.id]=path_new_node
 
+            if path_pos>self._height:
+                self._height=path_pos
+
     def get_height(self):
-        return 0
+        return self._height
 
     def label(self,xy, text,plt):
         y = xy[1] - 0.15  # shift y-value for label so that it's below the artist

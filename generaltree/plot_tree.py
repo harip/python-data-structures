@@ -1,3 +1,5 @@
+# https://matplotlib.org/gallery/shapes_and_collections/artist_reference.html?highlight=matplotlib%20pyplot%20hsv
+
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.path as mpath
@@ -43,20 +45,29 @@ class PlotTree:
         self.tree=tree
         self.set_mgrid()
         tree_height=self.tree.get_height()+1
+        prev_path=-1
 
         path_counter=0
         path_node_counter=0
         for k,v in self.tree.paths.items():
-            
+            prev_path=-1
             for j in v:
                 if j in self.plotted:
+                    prev_path=path_node_counter
                     path_node_counter=path_node_counter+1
                     continue
 
+                # Draw ellipse
                 ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
                 self.patches.append(ellipse) 
                 self.label(self.grid[path_node_counter], path_node_counter)  
 
+                # Draw arrow
+                if prev_path!=-1:
+                    arrow = mpatches.Arrow(self.grid[prev_path,0]- 0.05, self.grid[prev_path,1]- 0.05, self.grid[path_node_counter,0], self.grid[path_node_counter,1],width=0.1)
+                    self.patches.append(arrow)
+
+                prev_path=path_node_counter
                 path_node_counter=path_node_counter+1                
                 self.plotted[j]=True
 

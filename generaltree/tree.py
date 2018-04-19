@@ -15,10 +15,9 @@ from . import plot_tree as pt
 
 class Tree:
     def __init__(self):
-        self._height=0
+        self.height=0
         self.paths=dict()
         self.node_belongs_to_path=dict()
-        self.root_node=None
 
     def get_uniq_path(self):
         return str(uuid.uuid4())
@@ -37,9 +36,7 @@ class Tree:
             path_node.Path=first_path
             path_node.Node=node
             path_node.NodePos=0
-            self.node_belongs_to_path[node.id]=path_node
-
-            self.root_node=node
+            self.node_belongs_to_path[node.id]=path_node            
         else:
             # Get parent path
             path=self.node_belongs_to_path[node.parent_id]
@@ -72,15 +69,8 @@ class Tree:
             path_new_node.NodePos=path_pos
             self.node_belongs_to_path[node.id]=path_new_node
 
-            if path_pos>self._height:
-                self._height=path_pos
-
-    def get_height(self):
-        return self._height
-
-    def label(self,xy, text,plt):
-        y = xy[1] - 0.15  # shift y-value for label so that it's below the artist
-        plt.text(xy[0], y, text, ha="center", family='sans-serif', size=14)        
+            if path_pos>self.height:
+                self.height=path_pos
 
     def plot_tree(self):
         pt.PlotTree().plot(self)        

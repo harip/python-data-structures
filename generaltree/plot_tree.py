@@ -29,7 +29,7 @@ class PlotTree:
     
     def set_mgrid(self):
         num_of_paths=len(self.tree.paths)
-        max_node_path= self.tree.get_height()+1
+        max_node_path= self.tree.height+1
         grid_size_y=complex(0,max_node_path)
         grid_size_x=complex(0,num_of_paths)
         x=0
@@ -50,7 +50,7 @@ class PlotTree:
     def plot(self,tree):
         self.tree=tree
         self.set_mgrid()
-        tree_height=self.tree.get_height()+1
+        tree_height=self.tree.height+1
         prev_path=-1
 
         path_counter=0

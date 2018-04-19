@@ -1,17 +1,9 @@
 import uuid
-import os, sys
 from multiprocessing import Queue
 
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib.path as mpath
-import matplotlib.lines as mlines
-import matplotlib.patches as mpatches
-from matplotlib.collections import PatchCollection
-
-from . import node_info
 from . import node_type
 from . import plot_tree as pt
+from . import path_node as pn
 
 class Tree:
     def __init__(self):
@@ -32,8 +24,7 @@ class Tree:
             first_path=self.get_uniq_path()
             self.paths[first_path]=[node.id]
 
-            path_node=PathNode(first_path,node,0)
-            self.node_belongs_to_path[node.id]=path_node            
+            self.node_belongs_to_path[node.id]=pn.PathNode(first_path,node,0)            
         else:
             # Get parent path
             path=self.node_belongs_to_path[node.parent_id]
@@ -60,17 +51,10 @@ class Tree:
                 self.paths[new_path].append(node.id)
 
             # Maintain a dictionary of nodes for fast search
-            path_new_node=PathNode(path_name,node,path_pos)
-            self.node_belongs_to_path[node.id]=path_new_node
+            self.node_belongs_to_path[node.id]=pn.PathNode(path_name,node,path_pos)
 
             if path_pos>self.height:
                 self.height=path_pos
 
     def plot_tree(self):
-        pt.PlotTree().plot(self)        
-
-class PathNode:
-    def __init__(self,path,node,pos):
-        self.Path=path
-        self.Node=node
-        self.NodePos=pos
+        pt.PlotTree().plot(self)     

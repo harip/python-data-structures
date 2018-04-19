@@ -104,10 +104,25 @@ def test_tree_nodes():
     cn3.node_key="body"
     t.add_node(cn3,n)    
 
-    nodes=t.get_all_nodes()
-
-    print(nodes)
     assert len(t.get_all_nodes())==4
 
+def test_tree_get_node():
+    t=Tree()
+
+    # Add a parent node
+    n=NodeInfo()
+    n.node_key="Html"
+    n.type=NodeType.ROOT    
+    t.add_node(n,None)
+
+    # Add a child node
+    cn=NodeInfo()
+    cn.node_key="head"
+    t.add_node(cn,n)
+
+    node=t.get_node("head")
+
+    assert node.node_key=="head","head node should be returned"
+
 if __name__=="__main__":
-    test_tree_nodes()
+    test_tree_get_node()

@@ -32,10 +32,7 @@ class Tree:
             first_path=self.get_uniq_path()
             self.paths[first_path]=[node.id]
 
-            path_node=PathNode()
-            path_node.Path=first_path
-            path_node.Node=node
-            path_node.NodePos=0
+            path_node=PathNode(first_path,node,0)
             self.node_belongs_to_path[node.id]=path_node            
         else:
             # Get parent path
@@ -63,10 +60,7 @@ class Tree:
                 self.paths[new_path].append(node.id)
 
             # Maintain a dictionary of nodes for fast search
-            path_new_node=PathNode()
-            path_new_node.Path=path_name
-            path_new_node.Node=node
-            path_new_node.NodePos=path_pos
+            path_new_node=PathNode(path_name,node,path_pos)
             self.node_belongs_to_path[node.id]=path_new_node
 
             if path_pos>self.height:
@@ -76,7 +70,7 @@ class Tree:
         pt.PlotTree().plot(self)        
 
 class PathNode:
-    def __init__(self):
-        self.Path=""
-        self.Node=""
-        self.NodePos=0
+    def __init__(self,path,node,pos):
+        self.Path=path
+        self.Node=node
+        self.NodePos=pos

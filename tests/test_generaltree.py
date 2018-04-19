@@ -80,5 +80,34 @@ def test_tree():
 
     assert t.height==2,"Tree height should be 2"
 
+def test_tree_nodes():
+    t=Tree()
+
+    # Add a parent node
+    n=NodeInfo()
+    n.node_key="Html"
+    n.type=NodeType.ROOT    
+    t.add_node(n,None)
+
+    # Add a child node
+    cn=NodeInfo()
+    cn.node_key="head"
+    t.add_node(cn,n)
+
+    # Add a child node
+    cn2=NodeInfo()
+    cn2.node_key="js"
+    t.add_node(cn2,cn)    
+
+    # # Add a child node
+    cn3=NodeInfo()
+    cn3.node_key="body"
+    t.add_node(cn3,n)    
+
+    nodes=t.get_all_nodes()
+
+    print(nodes)
+    assert len(t.get_all_nodes())==4
+
 if __name__=="__main__":
-    test_tree()
+    test_tree_nodes()

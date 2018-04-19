@@ -56,5 +56,8 @@ class Tree:
             if path_pos>self.height:
                 self.height=path_pos
 
+    def get_all_nodes(self):
+        return [self.node_belongs_to_path[k].Node for k,v in self.node_belongs_to_path.items()]
+
     def plot_tree(self):
         pt.PlotTree().plot(self)     

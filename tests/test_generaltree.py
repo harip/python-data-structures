@@ -3,7 +3,7 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from generaltree import *
 
-def test_tree():
+def test_tree_plot():
     t=Tree()
 
     # Add a parent node
@@ -53,6 +53,32 @@ def test_tree():
     t.add_node(cn7,cn4)    
 
     t.plot_tree()
+
+def test_tree():
+    t=Tree()
+
+    # Add a parent node
+    n=NodeInfo()
+    n.node_key="Html"
+    n.type=NodeType.ROOT    
+    t.add_node(n,None)
+
+    # Add a child node
+    cn=NodeInfo()
+    cn.node_key="head"
+    t.add_node(cn,n)
+
+    # Add a child node
+    cn2=NodeInfo()
+    cn2.node_key="js"
+    t.add_node(cn2,cn)    
+
+    # # Add a child node
+    cn3=NodeInfo()
+    cn3.node_key="body"
+    t.add_node(cn3,n)    
+
+    assert t.height==2,"Tree height should be 2"
 
 if __name__=="__main__":
     test_tree()

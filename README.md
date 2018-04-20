@@ -8,6 +8,11 @@
 - pip install -r requirements.txt
 ```
 
+## Install locally
+```sh
+- python setup.py install
+```
+
 ## Package
 ```sh
 - python setup.py sdist

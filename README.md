@@ -8,4 +8,9 @@
 - pip install -r requirements.txt
 ```
 
+## Package
+```sh
+- python setup.py sdist
+```
+
 ![alt text](https://res.cloudinary.com/harip/image/upload/v1524106770/general/Figure_2.png)

@@ -1,3 +1,5 @@
 .noseids
 __pycache__/
 .vscode/launch.json
+dist/
+treeds.egg-info/

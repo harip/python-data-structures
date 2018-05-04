@@ -63,5 +63,9 @@ class Tree:
         nodes =[self.node_belongs_to_path[k].Node for k,v in self.node_belongs_to_path.items() if v.Node.node_key.lower() == node_name.lower()]
         return None if len(nodes)==0 else nodes[0]
 
+    def get_node_by_uniq(self,uniq_name):
+        nodes =[self.node_belongs_to_path[k].Node for k,v in self.node_belongs_to_path.items() if v.Node.uniq_name.lower() == uniq_name.lower()]
+        return None if len(nodes)==0 else nodes[0]           
+
     def plot_tree(self):
         pt.PlotTree().plot(self)     

@@ -87,9 +87,9 @@ class PlotTree:
         path_node_counter = 0
 
         # Iterate each path of the tree
-        for k, v in self.tree.paths.items():
+        for val in self.tree.paths.items():
             prev_path = -1
-            for j in v:
+            for j in val:
                 if j in self.plotted:
                     # Since path can contain the nodes that are already plotted
                     # Check if already plotted
@@ -107,15 +107,13 @@ class PlotTree:
 
                 # Draw arrow
                 if prev_path != -1:
-                    arrow_coord = self.get_arrow_coordinates(
-                        self.grid[prev_path],
-                        self.grid[path_node_counter])
-
+                    arrow_coord = self.get_arrow_coordinates(self.grid[prev_path],
+                                                             self.grid[path_node_counter])
                     arrow = mpatches.Arrow(arrow_coord[0],
-                        arrow_coord[1],
-                        arrow_coord[2],
-                        arrow_coord[3],
-                        width=0.05)
+                                           arrow_coord[1],
+                                           arrow_coord[2],
+                                           arrow_coord[3],
+                                           width=0.05)
                     self.patches.append(arrow)
 
                 # Make a note of which nodes have been plotted on the chart

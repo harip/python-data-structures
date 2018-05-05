@@ -1,12 +1,9 @@
 # https://matplotlib.org/gallery/shapes_and_collections/artist_reference.html?highlight=matplotlib%20pyplot%20hsv
 
-import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
-import matplotlib.path as mpath
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.collections import PatchCollection
-from . import node_info, tree
+import numpy as np
 
 class PlotTree:
     def __init__(self):
@@ -17,14 +14,14 @@ class PlotTree:
         self.tree = None
         self.plotted = dict()
 
-    def label(self, xy, text):
+    def label(self, label_xy, text):
         """
         Node label
             :param self:
-            :param xy: x,y location of the label
+            :param label_xy: x,y location of the label
             :param text: label text
         """
-        plt.text(xy[0], xy[1], text, ha="center", family='sans-serif', size=9)
+        plt.text(label_xy[0], label_xy[1], text, ha="center", family='sans-serif', size=9)
 
     def get_arrow_coordinates(self, start_loc, end_loc):
         """
@@ -55,7 +52,7 @@ class PlotTree:
         x = 0
         y = num_of_paths*0.2
         self.grid = np.mgrid[x:y:grid_size_x, x:y:grid_size_y].reshape(2, -1).T
-        self.grid = self.grid[::-1] 
+        self.grid = self.grid[::-1]
 
     def set_plot(self):
         """
@@ -111,12 +108,13 @@ class PlotTree:
                 # Draw arrow
                 if prev_path != -1:
                     arrow_coord = self.get_arrow_coordinates(
-                        self.grid[prev_path], 
+                        self.grid[prev_path],
                         self.grid[path_node_counter])
-                    arrow = mpatches.Arrow(arrow_coord[0], 
-                        arrow_coord[1], 
-                        arrow_coord[2], 
-                        arrow_coord[3], 
+
+                    arrow = mpatches.Arrow(arrow_coord[0],
+                        arrow_coord[1],
+                        arrow_coord[2],
+                        arrow_coord[3],
                         width=0.05)
                     self.patches.append(arrow)
 

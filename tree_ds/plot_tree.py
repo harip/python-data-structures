@@ -36,6 +36,10 @@ class PlotTree:
         y=num_of_paths*0.2
         self.grid =np.mgrid[x:y:grid_size_x,x:y:grid_size_y].reshape(2, -1).T
         self.grid=self.grid[::-1] 
+        self.display_grid()
+
+    def display_grid(self):
+        plt.plot(self.grid[:,0], self.grid[:,1], 'ro')
 
     def set_plot(self):
         colors = np.linspace(0, 1, len(self.patches ))
@@ -55,8 +59,18 @@ class PlotTree:
 
         path_counter=0
         path_node_counter=0
+
+        # k is the key, path name
+        # v is the list of nodes in the path
         for k,v in self.tree.paths.items():
             prev_path=-1
+
+            # Find number of nodes to be plotted
+            # Since each path would have its parent, some of the nodes would have already plotted the parent
+            # We need to ignore plotting them
+            nodes_to_plot_in_path=[j for j in v if j not in self.plotted ]
+            print(len(nodes_to_plot_in_path))
+
             for j in v:
                 if j in self.plotted:
                     prev_path=self.plotted[j]

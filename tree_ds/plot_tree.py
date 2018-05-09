@@ -49,6 +49,7 @@ class PlotTree:
         # Create grid
         grid_size_y = complex(0, max_node_path)
         grid_size_x = complex(0, num_of_paths)
+ 
         x = 0
         y = num_of_paths*0.2
         self.grid = np.mgrid[x:y:grid_size_x, x:y:grid_size_y].reshape(2, -1).T
@@ -72,6 +73,77 @@ class PlotTree:
         plt.tight_layout()
         plt.show()
 
+    def plot_v2(self, treeds):
+        """
+        Main plot function to plot the nodes
+            :param self:
+            :param treeds: the tree data stucture
+        """
+
+        # Tree
+        self.tree = treeds
+
+        # Set the grid
+        self.set_mgrid()
+        tree_height=self.tree.height+1
+        prev_path=-1
+
+        path_counter=0
+        path_node_counter=0
+
+        to_plot={}
+
+        # k is the key, path name
+        # v is the list of nodes in the path
+        for k,v in self.tree.paths.items():
+            prev_path=-1
+            to_plot[k]=[]
+            for j in v:
+
+                if j in self.plotted:
+                    # Since path can contain the nodes that are already plotted
+                    # Check if already plotted
+                    prev_path = self.plotted[j]
+                    path_node_counter = path_node_counter+1
+                    continue
+
+                # Draw ellipse
+                ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
+                self.patches.append(ellipse)
+
+                to_plot[k].insert(path_node_counter,ellipse)
+
+                # # Get text of node
+                # node = self.tree.node_belongs_to_path[j].Node
+                # self.label(self.grid[path_node_counter], node.node_key)
+
+                # # Draw arrow
+                # if prev_path != -1:
+                #     arrow_coord = self.get_arrow_coordinates(self.grid[prev_path],
+                #                                              self.grid[path_node_counter])
+                #     arrow = mpatches.Arrow(arrow_coord[0],
+                #                            arrow_coord[1],
+                #                            arrow_coord[2],
+                #                            arrow_coord[3],
+                #                            width=0.05)
+                #     self.patches.append(arrow)
+
+                # Make a note of which nodes have been plotted on the chart
+                self.plotted[j] = path_node_counter
+                prev_path = path_node_counter
+                path_node_counter = path_node_counter+1
+
+            path_counter = path_counter+1
+            path_node_counter = tree_height*path_counter
+
+
+        for i in range(0,tree_height):
+            ellipses=[to_plot[k][i] for k,v in to_plot.items() if len(v)>=i+1]
+            print(len(ellipses))
+
+        # print(to_plot)
+        self.set_plot()
+
     def plot(self, treeds):
         """
         Main plot function to plot the nodes
@@ -94,13 +166,6 @@ class PlotTree:
         # v is the list of nodes in the path
         for k,v in self.tree.paths.items():
             prev_path=-1
-
-            # Find number of nodes to be plotted
-            # Since each path would have its parent, some of the nodes would have already plotted the parent
-            # We need to ignore plotting them
-            nodes_to_plot_in_path=[j for j in v if j not in self.plotted ]
-            print(len(nodes_to_plot_in_path))
-
             for j in v:
 
                 if j in self.plotted:

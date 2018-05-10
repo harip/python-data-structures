@@ -85,12 +85,22 @@ class PlotTree:
 
         # Set the grid
         self.set_mgrid()
+
+        # Get some numbers
+        grid_x={
+            "max":max(self.grid[:,0]),
+            "min":min(self.grid[:,0])
+        }
+        grid_y={
+            "max":max(self.grid[:,1]),
+            "min":min(self.grid[:,1])
+        }      
         tree_height=self.tree.height+1
         prev_path=-1
-
         path_counter=0
         path_node_counter=0
 
+        # dictionary of all the ellipses that need to be plotted
         to_plot=dict()
 
         # k is the key, path name
@@ -110,7 +120,7 @@ class PlotTree:
 
                 # Draw ellipse
                 ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
-                self.patches.append(ellipse)
+                # self.patches.append(ellipse)
 
                 # Check if key exists
                 if node_pos_within_path in to_plot:
@@ -130,9 +140,32 @@ class PlotTree:
 
 
         # Get grid max and min
-        print(self.grid)
-        elip_0=to_plot[0][0]
-        elip_0.center=(0.6,1.2)
+        # Total width = tot_w
+        # num of items/nodes at each level = num_of_nodes
+        # node width = node_w
+        # num of spaces to evenly arrange the nodes = 2*num_of_nodes+1
+        # every alternate space fill with node
+        tot_w=grid_x["max"]-grid_x["min"] 
+        node_w=0.2
+        for tree_level in to_plot:
+            num_of_nodes=len(to_plot[tree_level])
+            num_of_spaces=2*num_of_nodes+1
+
+            # fill the node at every even number
+            space_w=tot_w/num_of_spaces
+            for loc in range(1,num_of_spaces):
+                if loc%2==0:
+                    center_x= (loc+1)*(space_w/2)
+                    # Set this center to node
+                    # Get the node index
+                    node_index=int(loc/2)-1
+                    elip=to_plot[tree_level][node_index]
+
+                    # Y is always constant, X varies
+                    elip.center[0]=center_x            
+
+        for k in to_plot:
+            self.patches=self.patches + to_plot[k]
         self.set_plot()
 
     def plot(self, treeds):

@@ -161,7 +161,7 @@ class PlotTree:
         node_w=0.2
         for tree_level in to_plot:
             # Ignore last level
-            if tree_level==self.tree.height:
+            if tree_level==self.tree.height :
                 continue
 
             num_of_nodes=len(to_plot[tree_level])
@@ -178,7 +178,7 @@ class PlotTree:
                     elip=to_plot[tree_level][node_index]["ellipse"]
 
                     # Y is always constant, X varies
-                    elip.center[0]=center_x            
+                    elip.center[0]=1.2-center_x            
 
         for k in to_plot:
             for item in to_plot[k]:

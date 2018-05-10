@@ -91,13 +91,13 @@ class PlotTree:
         path_counter=0
         path_node_counter=0
 
-        to_plot={}
+        to_plot=dict()
 
         # k is the key, path name
         # v is the list of nodes in the path
         for k,v in self.tree.paths.items():
             prev_path=-1
-            to_plot[k]=[]
+            node_pos_within_path=0
             for j in v:
 
                 if j in self.plotted:
@@ -105,28 +105,20 @@ class PlotTree:
                     # Check if already plotted
                     prev_path = self.plotted[j]
                     path_node_counter = path_node_counter+1
+                    node_pos_within_path=node_pos_within_path+1
                     continue
 
                 # Draw ellipse
                 ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
                 self.patches.append(ellipse)
 
-                to_plot[k].insert(path_node_counter,ellipse)
-
-                # # Get text of node
-                # node = self.tree.node_belongs_to_path[j].Node
-                # self.label(self.grid[path_node_counter], node.node_key)
-
-                # # Draw arrow
-                # if prev_path != -1:
-                #     arrow_coord = self.get_arrow_coordinates(self.grid[prev_path],
-                #                                              self.grid[path_node_counter])
-                #     arrow = mpatches.Arrow(arrow_coord[0],
-                #                            arrow_coord[1],
-                #                            arrow_coord[2],
-                #                            arrow_coord[3],
-                #                            width=0.05)
-                #     self.patches.append(arrow)
+                # Check if key exists
+                if node_pos_within_path in to_plot:
+                    to_plot[node_pos_within_path].append(ellipse)
+                else:
+                    to_plot[node_pos_within_path]=[ellipse]
+                
+                node_pos_within_path=node_pos_within_path+1
 
                 # Make a note of which nodes have been plotted on the chart
                 self.plotted[j] = path_node_counter
@@ -137,11 +129,10 @@ class PlotTree:
             path_node_counter = tree_height*path_counter
 
 
-        for i in range(0,tree_height):
-            ellipses=[to_plot[k][i] for k,v in to_plot.items() if len(v)>=i+1]
-            print(len(ellipses))
-
-        # print(to_plot)
+        # Get grid max and min
+        print(self.grid)
+        elip_0=to_plot[0][0]
+        elip_0.center=(0.6,1.2)
         self.set_plot()
 
     def plot(self, treeds):

@@ -46,7 +46,7 @@ def test_tree_plot():
     t.add_node(cn8,cn4)   
 
     assert t.height==3,"Tree height should be 2"
-    t.plot_tree_v2()
+    t.plot_tree()
 
 def test_tree_nodes():
     t=Tree()

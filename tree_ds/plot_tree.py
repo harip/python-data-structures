@@ -99,6 +99,7 @@ class PlotTree:
         prev_path=-1
         path_counter=0
         path_node_counter=0
+        node_w=0.2 
 
         # dictionary of all the ellipses that need to be plotted
         to_plot=dict()
@@ -121,7 +122,7 @@ class PlotTree:
                     continue
 
                 # Draw ellipse
-                ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
+                ellipse = mpatches.Ellipse(self.grid[path_node_counter], node_w, 0.1)
                 # self.patches.append(ellipse)
 
                 # Check if key exists
@@ -158,7 +159,6 @@ class PlotTree:
         # num of spaces to evenly arrange the nodes = 2*num_of_nodes+1
         # every alternate space fill with node
         tot_w=grid_x["max"]-grid_x["min"] 
-        node_w=0.2
         for tree_level in to_plot:
             # Ignore last level
             if tree_level==self.tree.height :
@@ -178,7 +178,7 @@ class PlotTree:
                     elip=to_plot[tree_level][node_index]["ellipse"]
 
                     # Y is always constant, X varies
-                    elip.center[0]=1.2-center_x            
+                    elip.center[0]=tot_w-center_x            
 
         for k in to_plot:
             for item in to_plot[k]:
@@ -233,7 +233,7 @@ class PlotTree:
                     continue
 
                 # Draw ellipse
-                ellipse = mpatches.Ellipse(self.grid[path_node_counter], 0.2, 0.1)
+                ellipse = mpatches.Ellipse(self.grid[path_node_counter], node_, 0.1)
                 self.patches.append(ellipse)
 
                 # Get text of node

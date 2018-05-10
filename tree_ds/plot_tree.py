@@ -107,6 +107,7 @@ class PlotTree:
         # v is the list of nodes in the path
         for k,v in self.tree.paths.items():
             prev_path=-1
+            prev_ellipse=tuple()
             node_pos_within_path=0
             for j in v:
 
@@ -114,6 +115,7 @@ class PlotTree:
                     # Since path can contain the nodes that are already plotted
                     # Check if already plotted
                     prev_path = self.plotted[j]
+                    prev_ellipse=(node_pos_within_path,len(to_plot[node_pos_within_path]))
                     path_node_counter = path_node_counter+1
                     node_pos_within_path=node_pos_within_path+1
                     continue
@@ -124,15 +126,25 @@ class PlotTree:
 
                 # Check if key exists
                 if node_pos_within_path in to_plot:
-                    to_plot[node_pos_within_path].append(ellipse)
+                    to_plot[node_pos_within_path].append( {
+                        "ellipse":ellipse,
+                        "prev_ellipse_loc":prev_ellipse,
+                        "node_key":self.tree.node_belongs_to_path[j].Node.node_key
+                    })
                 else:
-                    to_plot[node_pos_within_path]=[ellipse]
+                    to_plot[node_pos_within_path]=[ {
+                        "ellipse":ellipse,
+                        "prev_ellipse_loc":prev_ellipse,
+                        "node_key":self.tree.node_belongs_to_path[j].Node.node_key
+                    }]
                 
+                prev_ellipse=(node_pos_within_path,len(to_plot[node_pos_within_path]))
                 node_pos_within_path=node_pos_within_path+1
 
                 # Make a note of which nodes have been plotted on the chart
                 self.plotted[j] = path_node_counter
                 prev_path = path_node_counter
+                
                 path_node_counter = path_node_counter+1
 
             path_counter = path_counter+1
@@ -148,24 +160,45 @@ class PlotTree:
         tot_w=grid_x["max"]-grid_x["min"] 
         node_w=0.2
         for tree_level in to_plot:
+            # Ignore last level
+            if tree_level==self.tree.height:
+                continue
+
             num_of_nodes=len(to_plot[tree_level])
             num_of_spaces=2*num_of_nodes+1
 
             # fill the node at every even number
             space_w=tot_w/num_of_spaces
-            for loc in range(1,num_of_spaces):
+            for loc in range(1,num_of_spaces+1):
                 if loc%2==0:
-                    center_x= (loc+1)*(space_w/2)
+                    center_x= ((loc-1)*space_w) + (space_w/2)
                     # Set this center to node
                     # Get the node index
                     node_index=int(loc/2)-1
-                    elip=to_plot[tree_level][node_index]
+                    elip=to_plot[tree_level][node_index]["ellipse"]
 
                     # Y is always constant, X varies
                     elip.center[0]=center_x            
 
         for k in to_plot:
-            self.patches=self.patches + to_plot[k]
+            for item in to_plot[k]:
+                self.patches.append(item["ellipse"] )
+                self.label(item["ellipse"].center, item["node_key"])  
+                if len(item["prev_ellipse_loc"]) >0:
+                    # Parent ellipse
+                    e_key=item["prev_ellipse_loc"][0]
+                    e_val_index=item["prev_ellipse_loc"][1]-1
+                    parent_ellipse=to_plot[e_key][e_val_index]["ellipse"].center
+                    arrow_coord = self.get_arrow_coordinates(parent_ellipse,
+                                                             item["ellipse"].center)
+                    arrow = mpatches.Arrow(arrow_coord[0],
+                                           arrow_coord[1],
+                                           arrow_coord[2],
+                                           arrow_coord[3],
+                                           width=0.05)        
+                    self.patches.append(arrow)     
+                                                                                                             
+
         self.set_plot()
 
     def plot(self, treeds):

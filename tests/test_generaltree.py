@@ -3,7 +3,7 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from tree_ds import *
 
-def test_tree_plot():
+def tree_plot():
     t = Tree()
 
     # Add a parent node
@@ -37,8 +37,6 @@ def test_tree_plot():
     cn8=NodeInfo("body",None,None) 
     t.add_node(cn8,n)   
   
-    # cn9=NodeInfo("<b>",None,None) 
-    # t.add_node(cn9,cn5)   
     cn5=NodeInfo("title",None,None) 
     t.add_node(cn5,cn) 
 
@@ -47,10 +45,13 @@ def test_tree_plot():
     cn11=NodeInfo("<p>",None,None) 
     t.add_node(cn11,cn5)  
 
+    cn12=NodeInfo("<p>",None,None) 
+    t.add_node(cn12,cn8)  
+
     #t.plot_tree()
     t.plot_tree_v2()
 
-def test_tree_nodes():
+def tree_nodes():
     t = Tree()
 
     # Add a parent node
@@ -71,7 +72,7 @@ def test_tree_nodes():
 
     assert len(t.get_all_nodes()) == 4
 
-def test_tree_get_node():
+def tree_get_node():
     t = Tree()
 
     # Add a parent node
@@ -87,4 +88,4 @@ def test_tree_get_node():
     assert node.node_key == "head","head node should be returned"
 
 if __name__ == "__main__":
-    test_tree_plot()
+    tree_plot()

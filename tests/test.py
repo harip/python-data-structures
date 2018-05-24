@@ -14,11 +14,11 @@ y = num_of_paths*0.2
 grid = np.mgrid[x:y:grid_size_x, x:y:grid_size_y].reshape(2, -1).T
 grid = grid[::-1]
 
-print(grid) 
+# print(grid) 
 
 
 
-plt.plot(grid[:,0], grid[:,1], 'ro')
-plt.show()
+# plt.plot(grid[:,0], grid[:,1], 'ro')
+# plt.show()
 
  

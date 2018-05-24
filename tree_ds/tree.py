@@ -71,4 +71,4 @@ class Tree:
         pt.PlotTree().plot(self)     
 
     def plot_tree_v2(self):
-        pt.PlotTree().plot_v2(self)
+        pt.PlotTree().plot_tree_v2(self)

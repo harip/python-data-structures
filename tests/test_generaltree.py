@@ -37,7 +37,7 @@ def test_tree_plot():
     cn8=NodeInfo("body",None,None) 
     t.add_node(cn8,n)   
   
-    cn5=NodeInfo("title",None,None) 
+    cn5=NodeInfo("title","google.com",None) 
     t.add_node(cn5,cn) 
 
     cn10=NodeInfo("<p>",None,None) 
@@ -48,8 +48,9 @@ def test_tree_plot():
     cn12=NodeInfo("<p>",None,None) 
     t.add_node(cn12,cn8)  
 
-    t.plot_tree()
-    t.plot_paths({"show_grid":True})
+    # t.plot_tree()
+    # t.plot_paths({"show_grid":True})
+    t.export_tree_tocsv("test.csv")
 
 def test_tree_nodes():
     t = Tree()

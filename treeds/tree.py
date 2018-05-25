@@ -1,4 +1,5 @@
 import uuid
+import pandas as pd
 from multiprocessing import Queue
 
 from . import node_type
@@ -72,3 +73,37 @@ class Tree:
 
     def plot_paths(self,config={}):
         pt.PlotTree(config).plot_paths(self)
+
+    def export_tree(self):
+        path_counter=0
+        path_node_counter=0
+        prev_node_loc=0
+        plotted_node=dict()
+
+        # k is the key, path name
+        # v is the list of nodes in the path
+        for k,v in self.paths.items():
+            node_pos_in_path=0
+            for j in v:              
+                
+                # This condition will take care of not plotting same node more than once
+                if j in plotted_node and plot_paths==False:
+                    prev_node_loc=plotted_node[j]
+                    path_node_counter=path_node_counter+1
+                    node_pos_in_path=node_pos_in_path+1
+                    continue                   
+               
+                # Get text of node
+                node = self.node_belongs_to_path[j].Node              
+
+                # Make a note of which nodes have been plotted on the chart
+                plotted_node[j]=path_node_counter
+                prev_node_loc=path_node_counter
+                path_node_counter = path_node_counter+1
+                node_pos_in_path=node_pos_in_path+1                
+
+            # New path always starts from the top, all paths are not of same height
+            path_counter = path_counter+1
+            path_node_counter = (self.height+1)*path_counter
+
+        self.set_plot()

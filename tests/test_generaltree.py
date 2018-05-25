@@ -1,7 +1,7 @@
 import os, sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from tree_ds import *
+from treeds import *
 
 def test_tree_plot():
     t = Tree()

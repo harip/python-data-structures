@@ -3,7 +3,7 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from tree_ds import *
 
-def tree_plot():
+def test_tree_plot():
     t = Tree()
 
     # Add a parent node
@@ -51,7 +51,7 @@ def tree_plot():
     t.plot_tree()
     t.plot_paths({"show_grid":True})
 
-def tree_nodes():
+def test_tree_nodes():
     t = Tree()
 
     # Add a parent node
@@ -72,7 +72,7 @@ def tree_nodes():
 
     assert len(t.get_all_nodes()) == 4
 
-def tree_get_node():
+def test_tree_get_node():
     t = Tree()
 
     # Add a parent node
@@ -88,4 +88,4 @@ def tree_get_node():
     assert node.node_key == "head","head node should be returned"
 
 if __name__ == "__main__":
-    tree_plot()
+    test_tree_plot()

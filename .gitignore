@@ -4,3 +4,4 @@ __pycache__/
 dist/
 treeds.egg-info/
 build/*
+.vscode/*

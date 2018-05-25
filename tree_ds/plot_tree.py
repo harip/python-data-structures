@@ -6,13 +6,14 @@ from matplotlib.collections import PatchCollection
 import numpy as np
 
 class PlotTree:
-    def __init__(self):
+    def __init__(self,config={}):
         plt.rcdefaults()
         self.fig, self.ax = plt.subplots()
         self.grid = None
         self.patches = []
         self.tree = None
         self.plotted = dict()
+        self.config=config
 
     def label(self, label_xy, text):
         plt.text(label_xy[0], label_xy[1], text, ha="center", family='sans-serif', size=9)
@@ -39,7 +40,9 @@ class PlotTree:
         y = num_of_paths*0.2
         self.grid = np.mgrid[x:y:grid_size_x, x:y:grid_size_y].reshape(2, -1).T
         self.grid = self.grid[::-1]
-        # self.display_grid()
+
+        if "show_grid" in self.config and self.config["show_grid"]==True:
+            self.display_grid()
 
     def display_grid(self):
         plt.plot(self.grid[:,0], self.grid[:,1], 'ro')
@@ -59,7 +62,10 @@ class PlotTree:
         plt.tight_layout()
         plt.show()
 
-    def plot_tree_v2(self, treeds):
+    def plot_paths(self,treeds):
+        self.plot_tree(treeds,True)
+
+    def plot_tree(self, treeds,plot_paths=False):
         self.tree = treeds
         self.arrange_paths()        
         self.set_mgrid()
@@ -75,8 +81,9 @@ class PlotTree:
         for k,v in self.tree.paths.items():
             node_pos_in_path=0
             for j in v:              
-
-                if j in plotted_node:
+                
+                # This condition will take care of not plotting same node more than once
+                if j in plotted_node and plot_paths==False:
                     prev_node_loc=plotted_node[j]
                     path_node_counter=path_node_counter+1
                     node_pos_in_path=node_pos_in_path+1

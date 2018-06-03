@@ -23,11 +23,11 @@ class PlotTree:
                                 start_loc[1],
                                 end_loc[0]-start_loc[0],
                                 end_loc[1]-start_loc[1],
-                                width=0.05)
+                                width=0.1)
 
     def set_mgrid(self):
         # Get number of paths, this will determine the width of the plot/grid
-        num_of_paths = len(self.tree.paths)
+        num_of_paths = len(self.tree.paths) 
 
         # Get the height of the tree, this will determine the height of the plot
         max_node_path = self.tree.height+1
@@ -55,15 +55,12 @@ class PlotTree:
     def set_plot(self):
         colors = np.linspace(0, 1, len(self.patches))
         collection = PatchCollection(self.patches, cmap=plt.cm.hsv, alpha=0.3)
-        collection.set_array(np.array(colors))
+        # collection.set_array(np.array(colors))
         self.ax.add_collection(collection)
         plt.axis('equal')
         plt.axis('off')
         plt.tight_layout()
         plt.show()
-
-    def plot_paths(self,treeds):
-        self.plot_tree(treeds,True)
 
     def get_node_plot_pos(self):
         path_counter=0
@@ -107,14 +104,12 @@ class PlotTree:
                 
         return node_pos
 
-    def plot_tree_v2(self, treeds):
+    def plot_tree(self, treeds):
         self.tree = treeds
         self.arrange_paths()        
-        self.set_mgrid()
-        node_w=0.2 
-        path_counter=0
-        path_node_counter=0
-        prev_node_loc=0
+        self.set_mgrid()        
+        node_h=0.5
+        node_w=2*node_h
         prev_node_loc_center=[]
  
         node_plot_pos_mod=self.get_node_plot_pos()
@@ -124,38 +119,28 @@ class PlotTree:
         # v is the list of nodes in the path
         for k,v in self.tree.paths.items():
             node_pos_in_path=0
-            for j in v:              
+            for j in v:                           
                 node = self.tree.node_belongs_to_path[j].Node
+                center_xy=[node_plot_pos_mod[node.id][0],node_plot_pos_mod[node.id][1] ]
 
-                # Draw ellipse
-                # Get center of ellipse
-                center_xy=[ node_plot_pos_mod[node.id][0],node_plot_pos_mod[node.id][1] ]
-                print(center_xy)
-                ellipse = mpatches.Ellipse(center_xy, node_w, 0.1)
-                self.patches.append(ellipse)
+                if j not in plotted_node :
+                    # ellipse = mpatches.Ellipse(center_xy, node_w, node_h,color='r')
+                    # self.patches.append(ellipse)            
+                    self.label(center_xy, node.node_key)     
 
-                # Get text of node                
-                self.label(center_xy, node.node_key)
-
-                # # Draw arrow
+                # Draw arrow
                 if node_pos_in_path != 0:
-                    arrow = self.get_arrow( prev_node_loc_center,center_xy)
+                    arrow = self.get_arrow(prev_node_loc_center,center_xy)
                     self.patches.append(arrow)
 
                 # Make a note of which nodes have been plotted on the chart
-                plotted_node[j]=path_node_counter
-                prev_node_loc=path_node_counter
+                plotted_node[j]=True 
                 prev_node_loc_center=center_xy
-                path_node_counter = path_node_counter+1
-                node_pos_in_path=node_pos_in_path+1                
-
-            # New path always starts from the top, all paths are not of same height
-            path_counter = path_counter+1
-            path_node_counter = (self.tree.height+1)*path_counter
+                node_pos_in_path=node_pos_in_path+1   
 
         self.set_plot()        
 
-    def plot_tree(self, treeds,plot_paths=False):
+    def plot_paths(self, treeds):
         self.tree = treeds
         self.arrange_paths()        
         self.set_mgrid()
@@ -171,13 +156,6 @@ class PlotTree:
         for k,v in self.tree.paths.items():
             node_pos_in_path=0
             for j in v:              
-                
-                # This condition will take care of not plotting same node more than once
-                if j in plotted_node and plot_paths==False:
-                    prev_node_loc=plotted_node[j]
-                    path_node_counter=path_node_counter+1
-                    node_pos_in_path=node_pos_in_path+1
-                    continue                    
 
                 # Draw ellipse
                 ellipse = mpatches.Ellipse(self.grid[path_node_counter], node_w, 0.1)

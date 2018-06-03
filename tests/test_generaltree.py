@@ -48,9 +48,9 @@ def test_tree_plot():
     cn12=NodeInfo("<p>",None,None) 
     t.add_node(cn12,cn8)  
 
-    # t.plot_tree()
+    t.plot_tree_v2()
     # t.plot_paths({"show_grid":True})
-    t.export_tree_tocsv("test.csv")
+    # t.export_tree_tocsv("test.csv")
 
 def test_tree_nodes():
     t = Tree()

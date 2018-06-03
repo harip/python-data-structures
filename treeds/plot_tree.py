@@ -48,7 +48,7 @@ class PlotTree:
         plt.plot(self.grid[:,0], self.grid[:,1], 'ro')
 
     def arrange_paths(self):
-        path_tuple=[(k,"-".join([self.tree.node_belongs_to_path[nv].Node.node_key for nv in v]))  for k,v in self.tree.paths.items()]
+        path_tuple=[(k,"-".join([self.tree.node_belongs_to_path[nv].Node.id for nv in v]))  for k,v in self.tree.paths.items()]
         path_tuple=sorted(path_tuple,key=lambda x:x[1])
         self.tree.paths=dict((tup[0],self.tree.paths[tup[0]]) for tup in path_tuple)
 
@@ -65,6 +65,96 @@ class PlotTree:
     def plot_paths(self,treeds):
         self.plot_tree(treeds,True)
 
+    def get_node_plot_pos(self):
+        path_counter=0
+        path_node_counter=0
+        arrange_nodes=[]
+
+        # k is the key, path name
+        # v is the list of nodes in the path
+        for k,v in self.tree.paths.items():
+            node_pos_in_path=0
+            for j in v:      
+                node = self.tree.node_belongs_to_path[j].Node
+                arrange_nodes.append((node,path_node_counter))
+
+                # Make a note of which nodes have been plotted on the chart
+                path_node_counter = path_node_counter+1
+                node_pos_in_path=node_pos_in_path+1                
+
+            # New path always starts from the top, all paths are not of same height
+            path_counter = path_counter+1
+            path_node_counter = (self.tree.height+1)*path_counter
+
+        # get uniq 
+        node_ids=set(t[0].id for t in arrange_nodes)
+
+        # get all the grid locations for a node_id
+        node_pos=dict()
+        for node_id in node_ids:
+            node_grid_pos=[a_nodes[1] for a_nodes in arrange_nodes if a_nodes[0].id==node_id]
+            node_plot_count=len(node_grid_pos)
+
+            x=self.grid[node_grid_pos[0]][0]
+            y=self.grid[node_grid_pos[0]][1]
+            if node_plot_count>1:
+                # calculate the middle, only consider x values
+                end_x=self.grid[ node_grid_pos[node_plot_count-1]][0]
+                center_x=(x+end_x)/2                
+                node_pos[node_id]=(center_x,y)
+            else:
+                node_pos[node_id]=(x,y)
+                
+        return node_pos
+
+    def plot_tree_v2(self, treeds):
+        self.tree = treeds
+        self.arrange_paths()        
+        self.set_mgrid()
+        node_w=0.2 
+        path_counter=0
+        path_node_counter=0
+        prev_node_loc=0
+        prev_node_loc_center=[]
+ 
+        node_plot_pos_mod=self.get_node_plot_pos()
+        plotted_node=dict()
+
+        # k is the key, path name
+        # v is the list of nodes in the path
+        for k,v in self.tree.paths.items():
+            node_pos_in_path=0
+            for j in v:              
+                node = self.tree.node_belongs_to_path[j].Node
+
+                # Draw ellipse
+                # Get center of ellipse
+                center_xy=[ node_plot_pos_mod[node.id][0],node_plot_pos_mod[node.id][1] ]
+                print(center_xy)
+                ellipse = mpatches.Ellipse(center_xy, node_w, 0.1)
+                self.patches.append(ellipse)
+
+                # Get text of node                
+                self.label(center_xy, node.node_key)
+
+                # # Draw arrow
+                if node_pos_in_path != 0:
+                    arrow = self.get_arrow( prev_node_loc_center,center_xy)
+                    self.patches.append(arrow)
+
+                # Make a note of which nodes have been plotted on the chart
+                plotted_node[j]=path_node_counter
+                prev_node_loc=path_node_counter
+                prev_node_loc_center=center_xy
+                path_node_counter = path_node_counter+1
+                node_pos_in_path=node_pos_in_path+1                
+
+            # New path always starts from the top, all paths are not of same height
+            path_counter = path_counter+1
+            path_node_counter = (self.tree.height+1)*path_counter
+
+        self.set_plot()        
+
     def plot_tree(self, treeds,plot_paths=False):
         self.tree = treeds
         self.arrange_paths()        
@@ -73,7 +163,7 @@ class PlotTree:
         path_counter=0
         path_node_counter=0
         prev_node_loc=0
-
+ 
         plotted_node=dict()
 
         # k is the key, path name

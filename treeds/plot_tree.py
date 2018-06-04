@@ -125,8 +125,9 @@ class PlotTree:
 
                 if j not in plotted_node :
                     # ellipse = mpatches.Ellipse(center_xy, node_w, node_h,color='r')
-                    # self.patches.append(ellipse)            
-                    self.label(center_xy, node.node_key)     
+                    # self.patches.append(ellipse)          
+                    node_text=node.node_key.replace(">","").replace("<","")            
+                    self.label(center_xy, node_text)    
 
                 # Draw arrow
                 if node_pos_in_path != 0:
